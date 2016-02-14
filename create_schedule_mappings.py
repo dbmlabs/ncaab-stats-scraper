@@ -32,7 +32,7 @@ if (scrapersettings.map_schedule == 1):
         except:
             print "Error getting data. Moving on to next game."
             continue
-        team_mainpage_data_soup = BeautifulSoup(team_mainpage_data) # Soupify that page
+        team_mainpage_data_soup = BeautifulSoup(team_mainpage_data,"html.parser") # Soupify that page
         gamelinks = [] # Create a blank list for each game
         for link in team_mainpage_data_soup.find_all('a'): # Locate all links in the document
             if "game/index/" in link.get('href'): # If they contain a URL segment suggesting it is a game...
@@ -56,7 +56,7 @@ if (scrapersettings.map_schedule == 1):
                 date = link.find_previous("td").find_previous("td").find_previous("td").get_text() # Get the date for the game
                 game_id = game_link.split("/")[-1] # Get the game ID from the URL (last set of digits)
                 schedule_list.append([game_id, home_team, away_team, date, neutral, game_link]) # Append all of this information to our master schedule list
-
+                
     schedule_dict = dict([(case[0], (case[1:])) for case in schedule_list]) # Create a dictionary from our list so we don't have any duplicate entries
     for item in schedule_dict: # For each item on that list
         schedule_mappingfile_w.writelines(item + "\t" + str(schedule_dict[item][0]) + "\t" + str(schedule_dict[item][1]) + "\t" + str(schedule_dict[item][2]) + "\t" + str(schedule_dict[item][3]) + "\t" + str(schedule_dict[item][4]) + "\n") # Write to our mapping file
