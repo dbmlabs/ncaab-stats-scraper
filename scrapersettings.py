@@ -9,8 +9,12 @@
 ##############################################################
 
 # Select year for parsing
-academic_year = "2014" # Set the academic year (2012 refers to 2011-2012 season). As of writing, this can range from 2010 to 2013.
-year_index = "11540" # Set the index that maps to the academic year. This may be obtained from looking at the team URLs on the list of available teams, for the given academic year. As of writing, the [academic_year, year_index] mappings are: [2013, 11220], [2012, 10740], [2011, 10440], and [2010, 10260]
+academic_year = "2016" # Set the academic year (2012 refers to 2011-2012 season). As of writing, this can range from 2010 to 2013.
+
+# Set the index that maps to the academic year. This may be obtained from looking at the team URLs on the list of available teams, for the given academic year. As of writing, the [academic_year, year_index] mappings are contained in this dictionary:
+yearIndexDict = {"2015":"12020","2014":"11540","2013":"11220","2012":"10740","2011":"10440","2010":"10260"}
+#You can add new academic_year/year_index mappings by copy & paste the line below with new mappings:
+yearIndexDict.update({"2016":"12260"})
 
 
 # What do you want to do? (Note: Lower tiers need higher tiers, i.e., ind_game_stats requires map_players (Tier 2), which requires map_teams (Tier 1).)
@@ -38,6 +42,7 @@ team_data = "data/team_data.tsv" # Data file for each team
 #### The variables below could be set, but probably don't need any modification #####
 debugmode = 1 # Output program steps (0 = off, 1 = on)
 params = { } # Any POST parameters that need to be sent (default)
+year_index = yearIndexDict[academic_year]
 http_header = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0",
             "Accept": "text/plain, */*; q=0.01",
@@ -52,4 +57,7 @@ http_header = {
             } # Variables from the HTTP header (default)
 
 start_url = 'http://stats.ncaa.org/team/inst_team_list?sport_code=MBB&academic_year=' + str(academic_year) + "&division=1" # URL to start from (Change this for different years). You can get this URL from http://stats.ncaa.org/team/inst_team_list?sport_code=MBB&division=1. This URL is for the 2011-2012 season.
+
+print "start_url=",start_url
+
 domain_base = 'http://stats.ncaa.org' # Base domain
