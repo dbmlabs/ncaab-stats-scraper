@@ -57,5 +57,4 @@ http_header = {
             } # Variables from the HTTP header (default)
 
 start_url = 'http://stats.ncaa.org/team/inst_team_list?sport_code=MBB&academic_year=' + str(academic_year) + "&division=1" # URL to start from (Change this for different years). You can get this URL from http://stats.ncaa.org/team/inst_team_list?sport_code=MBB&division=1. This URL is for the 2011-2012 season.
-
 domain_base = 'http://stats.ncaa.org' # Base domain
