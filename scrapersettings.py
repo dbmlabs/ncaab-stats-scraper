@@ -17,6 +17,9 @@ yearIndexDict = {"2015":"12020","2014":"11540","2013":"11220","2012":"10740","20
 yearIndexDict.update({"2016":"12260"})
 
 
+#No need to modify this line any more, just update the dictionary and the right year_index will be used based on academic_year
+year_index = yearIndexDict[academic_year]
+
 # What do you want to do? (Note: Lower tiers need higher tiers, i.e., ind_game_stats requires map_players (Tier 2), which requires map_teams (Tier 1).)
 map_teams = 1 # Create a team mapping (0 = no, 1 = yes) -- TIER 1
 map_schedule = 1 # Create schedule mapping (0 = no, 1 = yes)
@@ -42,7 +45,6 @@ team_data = "data/team_data.tsv" # Data file for each team
 #### The variables below could be set, but probably don't need any modification #####
 debugmode = 1 # Output program steps (0 = off, 1 = on)
 params = { } # Any POST parameters that need to be sent (default)
-year_index = yearIndexDict[academic_year]
 http_header = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0",
             "Accept": "text/plain, */*; q=0.01",

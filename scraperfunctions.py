@@ -95,3 +95,8 @@ def get_game_mappings():
     game_map = game_map.readlines()[1:]
     game_map = dict([(var.split("\t")[0], (var.split("\t")[1], var.split("\t")[2], var.split("\t")[3], var.split("\t")[4], var.split("\t")[5].strip("\n"))) for var in game_map])
     return(game_map)
+    
+def get_regex_extractTeamID():
+    return re.compile(r'\/team\/([0-9]+)\/' + str(scrapersettings.year_index))
+    
+    

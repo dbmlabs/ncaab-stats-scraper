@@ -43,6 +43,9 @@ if (scrapersettings.ind_game_stats == 1) or (scrapersettings.ind_player_stats ==
     # Parse the stats tables
     team_stats_total = [] # Create an empty list for storing the team stats
     alphanum = re.compile(r'[^\w\s:]+')
+
+    extractTeamID = scraperfunctions.get_regex_extractTeamID()
+    
     for value, game in enumerate(game_mapping): # For each game in our dictionary
         if scrapersettings.debugmode == 1: print "Processing game " + str(game) + " (" + str(value+1) + " of " + str(len(game_mapping)) + ")"
         game_url = game_mapping[game][4]
@@ -62,7 +65,7 @@ if (scrapersettings.ind_game_stats == 1) or (scrapersettings.ind_player_stats ==
         away_team_header = headertable.findAll('tr')[1]
         tds = away_team_header.findAll('td')
         try:
-            away_team =  str(tds[0].find('a').get('href').split('=')[-1].encode('utf-8').strip())
+            away_team =  str(extractTeamID.match(tds[0].find('a').get('href')).group(1))
         except:
             away_team = 0
         try:
@@ -75,7 +78,7 @@ if (scrapersettings.ind_game_stats == 1) or (scrapersettings.ind_player_stats ==
         home_team_header = headertable.findAll('tr')[2]
         tds = home_team_header.findAll('td')
         try:
-            home_team =  str(tds[0].find('a').get('href').split('=')[-1].encode('utf-8').strip())
+            home_team =  str(extractTeamID.match(tds[0].find('a').get('href')).group(1))
         except:
             home_team = 0
         try:

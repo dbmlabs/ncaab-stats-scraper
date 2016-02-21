@@ -24,10 +24,12 @@ if (scrapersettings.map_teams == 1):
     teamlist_data = scraperfunctions.grabber(scrapersettings.start_url, scrapersettings.params, scrapersettings.http_header) # Get data from main page
     teamlist_data_soup = BeautifulSoup(teamlist_data,"html.parser") # Soupify that data
 
+    extractTeamID = scraperfunctions.get_regex_extractTeamID()
+    
     # Create a mapping for teams
     for link in teamlist_data_soup.find_all('a'): # For each hyperlink on the page
         
-        linkMatch = re.match(r'/team\/([0-9]+)\/' + str(scrapersettings.year_index),link.get('href')) # If the hyperlink contains this string
+        linkMatch = extractTeamID.match(link.get('href')) # If the hyperlink contains this string
         if linkMatch: # If it does, parse onward
             team_id = linkMatch.group(1) # Get the team ID from the URL
             team_name = str(link.get_text()) # Get the text associated with the hyperlink

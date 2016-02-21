@@ -12,6 +12,7 @@ import scraperfunctions
 import scrapersettings
 import csv
 from bs4 import BeautifulSoup
+import re
 
 if (scrapersettings.map_schedule == 1):
     print "Generating schedule mappings"
@@ -22,7 +23,9 @@ if (scrapersettings.map_schedule == 1):
     # Grab data
     # Parse our mappings file to get our list of teams
     team_mapping = scraperfunctions.get_team_mappings()
-
+    
+    extractTeamID = scraperfunctions.get_regex_extractTeamID()
+    
     # Create the schedule
     schedule_list = [] # Create an empty list for storing all of our games
     for value, team in enumerate(team_mapping): # For each team in our dictionary
@@ -38,7 +41,7 @@ if (scrapersettings.map_schedule == 1):
             if "game/index/" in link.get('href'): # If they contain a URL segment suggesting it is a game...
                 game_link = str(scrapersettings.domain_base + link.get('href')).split("?")[0] # Strip out any URL variables since we don't need them
                 try:
-                    opponent_id = link.find_previous("td").find_previous("td").find("a").get('href').split("?org_id=")[1]
+                    opponent_id =  str(extractTeamID.match(link.find_previous("td").find_previous("td").find("a").get('href')).group(1))
                 except:
                     opponent_id = 0
                 opponent_text = link.find_previous("td").find_previous("td").get_text().encode('utf-8').strip()
@@ -56,7 +59,7 @@ if (scrapersettings.map_schedule == 1):
                 date = link.find_previous("td").find_previous("td").find_previous("td").get_text() # Get the date for the game
                 game_id = game_link.split("/")[-1] # Get the game ID from the URL (last set of digits)
                 schedule_list.append([game_id, home_team, away_team, date, neutral, game_link]) # Append all of this information to our master schedule list
-
+                
     schedule_dict = dict([(case[0], (case[1:])) for case in schedule_list]) # Create a dictionary from our list so we don't have any duplicate entries
     for item in schedule_dict: # For each item on that list
         schedule_mappingfile_w.writelines(item + "\t" + str(schedule_dict[item][0]) + "\t" + str(schedule_dict[item][1]) + "\t" + str(schedule_dict[item][2]) + "\t" + str(schedule_dict[item][3]) + "\t" + str(schedule_dict[item][4]) + "\n") # Write to our mapping file
